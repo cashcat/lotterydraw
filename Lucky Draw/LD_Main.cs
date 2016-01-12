@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.OleDb;
 using System.Collections;
+using System.Threading;
 
 namespace Lucky_Draw
 {
@@ -326,8 +327,9 @@ namespace Lucky_Draw
         {            
              try
                 {
+
                     if (isCheck)
-                    {                       
+                    {
                         //检查员工的数据有变化
                         if (DataAccess.DataIsChange)
                         {
@@ -352,15 +354,22 @@ namespace Lucky_Draw
                             MessageBox.Show(ex.Message);
                         }
 
+
                         timLD.Start();
                         btnOpen.Enabled = true;
-                        btnOpen.Focus(); 
+                        btnOpen.Focus();
+                   
+
                     }
                     else
                     {
                         MessageBox.Show("请先选择要抽取的奖项！", "没有记录", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
+
+                        
+                   
+                    
                 }
                 catch
                 { }
@@ -374,8 +383,10 @@ namespace Lucky_Draw
         /// <param name="e"></param>
         private void btnOpen_Click(object sender, EventArgs e)
         {
+
             for (int x = 0; x < onesNums; x++)
-            { 
+            {
+                //Thread.Sleep(100);
                 chouJiang();
             }
             try
@@ -633,6 +644,20 @@ namespace Lucky_Draw
                 Set_StuCount();//加载可以参加抽奖的人数
                 Awa_View(); 
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (isCheck)
+            {
+                for (int x = 0; x < iJXCount; x++)
+                {
+                    btnBegin.PerformClick();
+                    Thread.Sleep(2000);
+                    btnOpen.PerformClick();
+                }
+            }
+
         }
     }
 }
